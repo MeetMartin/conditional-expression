@@ -1,2 +1,4 @@
 node_modules
 .sonarlint
+.idea
+.nyc_output

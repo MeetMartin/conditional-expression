@@ -2,10 +2,13 @@
   "name": "conditional-expression",
   "version": "1.0.0",
   "description": "JavaScript functional conditional expression",
-  "main": "dist/conditional-expression.js",
+  "main": "dist/conditional-expression.min.js",
   "module": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --progress --mode production",
+    "lint": "eslint src test",
+    "mocha": "NODE_ENV=test nyc mocha test/*.test.js --require @babel/register --require @babel/polyfill",
+    "test": "npm run lint && npm run mocha"
   },
   "repository": {
     "type": "git",
@@ -19,13 +22,23 @@
     "pattern",
     "matching"
   ],
-  "author": "Martin Novak",
+  "author": "Martin Novak <ragnarecek@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/MartinGentleman/conditional-expression/issues"
   },
   "homepage": "https://github.com/MartinGentleman/conditional-expression#readme",
   "devDependencies": {
-    "webpack": "^4.23.0"
+    "@babel/core": "^7.1.2",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/register": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "path": "^0.12.7",
+    "webpack": "^4.23.0",
+    "webpack-cli": "^3.1.2"
   }
 }

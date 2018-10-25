@@ -1,11 +1,22 @@
-var path = require('path');
+const path = require('path');
 
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'conditional-expression.js',
+    filename: 'conditional-expression.min.js',
     library: 'match',
-    libraryTarget: 'umd'
-  }
+    libraryTarget: 'umd',
+    umdNamedDefine: true
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader'
+      }
+    ]
+  },
+  devtool: 'source-map'
 };
