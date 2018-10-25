@@ -1,0 +1,31 @@
+{
+  "name": "conditional-expression",
+  "version": "1.0.0",
+  "description": "JavaScript functional conditional expression",
+  "main": "dist/conditional-expression.js",
+  "module": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MartinGentleman/conditional-expression.git"
+  },
+  "keywords": [
+    "functional",
+    "conditional",
+    "expression",
+    "match",
+    "pattern",
+    "matching"
+  ],
+  "author": "Martin Novak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MartinGentleman/conditional-expression/issues"
+  },
+  "homepage": "https://github.com/MartinGentleman/conditional-expression#readme",
+  "devDependencies": {
+    "webpack": "^4.23.0"
+  }
+}
