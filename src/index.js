@@ -13,7 +13,7 @@ const match = x => ({
   with: y => onMatch(x)(() => y.test(x)),
   equals: y => onMatch(x)(() => x === y),
   includes: y => onMatch(x)(() => x.includes(y)),
-  typeof: y => onMatch(x)(() => typeof x === y),
+  typeOf: y => onMatch(x)(() => typeof x === y),
   else: y => express(y)(x)
 });
   
@@ -33,7 +33,7 @@ const express = y => x => typeof y === 'function' ? y (x) : y;
  * @param {function} fn function used for matching
  * @returns {object} onMatch: a -> function -> {then: b -> c}
  */
-const onMatch = x => fn => ({then: z => fn(x) ? matched(express(z)(x)) : match(x)});
+const onMatch = x => fn => ({then: z => fn(x) === true ? matched(express(z)(x)) : match(x)});
   
 /**
  * Once a match is made we are not processing any conditions anymore
@@ -45,7 +45,7 @@ const matched = x => ({
   with: onMatched(x),
   equals: onMatched(x),
   includes: onMatched(x),
-  typeof: onMatched(x),
+  typeOf: onMatched(x),
   else: () => x
 });
   
