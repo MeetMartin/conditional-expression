@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "JavaScript functional conditional expression",
   "main": "dist/conditional-expression.min.js",
-  "module": "src/index.js",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "build": "webpack --progress --mode production",
     "lint": "eslint src test",
