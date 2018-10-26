@@ -12,7 +12,7 @@ const match = x => ({
   on: y => onMatch(x)(y),
   with: y => onMatch(x)(() => y.test(x)),
   equals: y => onMatch(x)(() => x === y),
-  includes: y => onMatch(x)(() => x.includes(y)),
+  includes: y => onMatch(x)(() => typeof x === 'string' && x.includes(y)),
   typeOf: y => onMatch(x)(() => typeof x === y),
   else: y => express(y)(x)
 });

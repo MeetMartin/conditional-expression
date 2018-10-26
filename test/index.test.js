@@ -61,9 +61,12 @@ describe('\'Includes\' function test using evaluation based on strict equal.', (
     assert.isFunction(match('string').includes('st').then, 'It does not return then function on a match.');
     assert.isFunction(match('string').includes('petra').then, 'It does not return then function without a match.');
   });
-  it('\'With\' should match based on provided regular expression.', () => {
+  it('\'Includes\' should match based on provided string.', () => {
     assert.isTrue(match('string').includes('st').then(true).else(false), 'It does not correctly match.');
     assert.isFalse(match('string').includes('martin').then(true).else(false), 'It does not correctly match.');
+  });
+  it('\'Includes\' always evaluates as false if a string is not provided to original match.', () => {
+    assert.isFalse(match(1).includes('string').then(true).else(false), 'It does not evaluate as false if string is not provided.');
   });
 });
 
