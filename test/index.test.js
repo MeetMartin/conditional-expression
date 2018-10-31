@@ -2,6 +2,8 @@ import { assert } from 'chai';
 
 import match from '../src';
 
+const param = 'this is string';
+
 describe('Match function test.', () => {
   it('Match of anything should return an object.', () => {
     assert.isObject(match(1), 'Match is not an object.');
@@ -11,6 +13,7 @@ describe('Match function test.', () => {
     assert.isFunction(match(1).on(() => false).then, 'On does not return then function without a match.');
   });
   it('Else should provide final evaluation result on both successful and unsuccessful matches.', () => {
+    assert.isTrue(match(1).else(true), 'Using only else works.');
     assert.isTrue(match(1).on(() => true).then(true).else(false), 'Else does not provide final evaluation on a match.');
     assert.isTrue(match(1).on(() => true).then(true).else(() => false), 'Else does not provide final evaluation on a match.');
     assert.isFalse(match(1).on(() => false).then(true).else(false), 'Else does not provide final evaluation without a match.');
@@ -89,5 +92,37 @@ describe('Various combinations with deep chains are possible.', () => {
   it('It should return the first match and ignore correct matches afterwards.', () => {
     assert.strictEqual(match(1).typeOf('number').then('type').equals(1).then('equals').else('na'),
       'type', 'It does not evaluate correctly with chaining.');
+  });
+  it('Getting result from match surrounded by false matches should work.', () => {
+    assert.isTrue(match(param).includes('notstring').then(false).includes('this').then(true).includes('notstring').then(false).else(false));
+  });
+});
+
+describe('thenMatch allows for nesting.', () => {
+  it('Getting result from nested else should work.', () => {
+    assert.isTrue(match(param).includes('string').thenMatch(param).else(true).else(false));
+  });
+  it('Getting result from nested match should work.', () => {
+    assert.isTrue(match(param).includes('string').thenMatch(param).includes('this').then(true).else(false).else(false));
+  });
+  it('Getting result from nested match sorounded by false matches should work.', () => {
+    assert.isTrue(match(param).includes('string').thenMatch(param).includes('notstring').then(false).includes('this').then(true).includes('notstring').then(false).else(false).else(false));
+  });
+  it('Getting result from match afted false nested match branch should work.', () => {
+    assert.isTrue(match(param).includes('notstring').thenMatch(param).includes('this').then(false).else(false).includes('string').then(true).else(false));
+  });
+  it('Getting result from positive match followed by positive nested match branch should work.', () => {
+    assert.isTrue(match(param).includes('string').then(true).includes('this').thenMatch(param).includes('string').then(false).else(false).includes('string').then(false).else(false));
+  });
+});
+
+describe('Deeper nest matching through using match function as argument to then function.', () => {
+  it('Passing result of another match as argument to then function works.', () => {
+    assert.isTrue(match(param).includes('string').then(() => match(param).includes('this').then(true).else(false)).else(false));
+    assert.isTrue(match(param).includes('string').then(() => match(param).includes('notthis').then(false).else(true)).else(false));
+    assert.isTrue(match(param).includes('notstring').then(() => match(param).includes('this').then(false).else(false)).else(true));
+  });
+  it('Passing result of another match as argument to then function with thenMatch branch works.', () => {
+    assert.isTrue(match(param).includes('string').thenMatch(param).includes('this').then(() => match(param).includes('string').then(true).else(false)).else(false).else(false));
   });
 });
