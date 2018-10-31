@@ -11,6 +11,8 @@ as an alternative to ternary operator expression.
 
 GitHub repository: https://github.com/MartinGentleman/conditional-expression
 
+Medium article explaining motivation and use for the package: [How to replace switch and ternaries in functional JavaScript](https://medium.com/@martinnovk_22870/how-to-replace-switch-and-ternaries-in-functional-javascript-a011f0e93a31).
+
 ## Install
 
 
@@ -156,6 +158,60 @@ match({})
     .else(false);
 // returns true
 ```
+
+## thenMatch() nested matching
+
+You can use nested matching to create subbranches for evaluation. Only
+1 level deep nest is directly supported using thenMatch function.
+
+```js
+const param = 'this is string';
+
+match(param)
+    .includes('this').thenMatch(param)
+        .includes('string').then(true)
+        .else(false);
+    .else(false);
+// returns true
+```
+
+Notice that thenMatch uses its own parameter and that else in the nested branch
+is still required.
+
+To support deeper branching, you can pass match evaluation as a parameter
+to then function.
+
+```js
+const param = 'this is string';
+
+match(param)
+    .includes('this').thenMatch(param)
+        .includes('is').then(() => match(param)
+            .includes('string').then(true)
+            .else(false))
+        .else(false);
+    .else(false);
+// returns true
+```
+
+## conditional-expression changelog
+
+### 1.1.0
+
+- Matching now supports one level of nesting using "thenMatch" function.
+- Added more assertion to test the package and new functionality.
+- Changed the internal structure to promote more internal reusability of the code to add more matching functions in the future if needed.
+- 100 % test coverage provided.
+
+### 1.0.1
+
+- "include" function to always returns false if matching over anything else than a string.
+- 100 % test coverage provided.
+
+### 1.0.0
+
+- Initial version of conditional-expression providing matching without nesting using.
+- 100 % test coverage provided.
 
 ## Social
 

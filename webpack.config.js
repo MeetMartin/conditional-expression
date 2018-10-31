@@ -7,7 +7,7 @@ module.exports = {
     filename: 'conditional-expression.min.js',
     library: 'match',
     libraryTarget: 'umd',
-    umdNamedDefine: true
+    umdNamedDefine: false
   },
   module: {
     rules: [
