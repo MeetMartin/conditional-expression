@@ -1,6 +1,6 @@
 {
   "name": "conditional-expression",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "JavaScript functional conditional expression",
   "main": "dist/conditional-expression.min.js",
   "module": "src/index.js",
