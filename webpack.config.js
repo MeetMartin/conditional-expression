@@ -5,9 +5,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'conditional-expression.min.js',
-    library: 'match',
+    library: 'conditionalExpression',
     libraryTarget: 'umd',
-    umdNamedDefine: false
+    globalObject: 'this'
   },
   module: {
     rules: [

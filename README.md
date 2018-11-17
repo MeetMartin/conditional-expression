@@ -27,7 +27,7 @@ var match = require('conditional-expression');
 
 match(1)
   .equals(1).then(function () {
-    alert('hello world');
+    console.log('hello world');
   }).else(false);
 
 ```
@@ -38,7 +38,7 @@ With ES6:
 import match from 'conditional-expression';
 
 match(1)
-  .equals(1).then(() => alert('hello world'))
+  .equals(1).then(() => console.log('hello world'))
   .else(false);
 
 ```
@@ -70,7 +70,7 @@ match('something')
 // or
 
 match('functional programming')
-    .includes('programming').then(() => alert('awesome'));
+    .includes('programming').then(() => console.log('awesome'));
 ```
 
 You have the option of chaining:
@@ -128,7 +128,7 @@ match(73)
 // returns true
 ```
 
-### equals({any})
+### equals({*})
 Evaluates as true based on strict equality ===.
 
 ```js
@@ -156,6 +156,29 @@ Evaluates as true based a type.
 match({})
     .typeOf('object').then(true)
     .else(false);
+// returns true
+```
+
+### greaterThan({*}), lessThan({*}), atLeast({*}), atMost({*})
+Evaluates as true based on sizes.
+
+```js
+match(2).greaterThan(1).then(true).else(false);
+// returns true
+
+match('ab').lessThan('abc').then(true).else(false);
+// returns true
+
+match(2).atLeast(2).then(true).else(false);
+// returns true
+
+match(2).atLeast(3).then(true).else(false);
+// returns true
+
+match(2).atMost(2).then(true).else(false);
+// returns true
+
+match(2).atMost(1).then(true).else(false);
 // returns true
 ```
 

@@ -10,7 +10,11 @@ const higherOrderMatch = onFunction => evaluate => x => ({
   with: y => onFunction(x)(evaluate && y.test(x)),
   equals: y => onFunction(x)(evaluate && x === y),
   includes: y => onFunction(x)(evaluate && typeof x === 'string' && x.includes(y)),
-  typeOf: y => onFunction(x)(evaluate && typeof x === y)
+  typeOf: y => onFunction(x)(evaluate && typeof x === y),
+  isGreaterThan: y => onFunction(x)(evaluate && x > y),
+  lessThan: y => onFunction(x)(evaluate && x < y),
+  atLeast: y => onFunction(x)(evaluate && x >= y),
+  atMost: y => onFunction(x)(evaluate && x <= y)
 });
 
 /**
@@ -74,7 +78,7 @@ const ignoreNestedMatch = x => ({
  * @param {*} x in case of expression being a function, param is passed as its parameter
  * @returns {*} express: (function, x) -> function (x), express: function -> function (), express: x -> x
  * @example express('hello'); // return hello
- * @example express(() => window.alert('hello')); // triggers alert
+ * @example express(() => console.log('hello')); // prints out 'hello' to console
  */
 const express = y => x => typeof y === 'function' ? y(x) : y;
   

@@ -1,6 +1,8 @@
 import { assert } from 'chai';
 
-import match from '../src';
+const match = process.env.lib === 'prod' ?
+  require('../dist/conditional-expression.min').default :
+  require('../src').default;
 
 const param = 'this is string';
 
@@ -81,6 +83,66 @@ describe('\'TypeOf\' function test using evaluation based on strict equal.', () 
   it('\'TypeOf\' should match based on provided regular expression.', () => {
     assert.isTrue(match(1).typeOf('number').then(true).else(false), 'It does not correctly match.');
     assert.isFalse(match(1).typeOf('string').then(true).else(false), 'It does not correctly match.');
+  });
+});
+
+describe('\'isGreaterThan\' function test comparing sizes.', () => {
+  it('Then should be available on both successful and unsuccessful matches.', () => {
+    assert.isFunction(match(2).isGreaterThan(1).then, 'It does not return then function on a match.');
+    assert.isFunction(match('abc').isGreaterThan('ab').then, 'It does not return then function without a match.');
+  });
+  it('\'isGreaterThan\' should match based on provided value.', () => {
+    assert.isTrue(match(2).isGreaterThan(1).then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match(2).isGreaterThan(2).then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match(2).isGreaterThan(3).then(true).else(false), 'It does not correctly match.');
+    assert.isTrue(match('abc').isGreaterThan('ab').then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match('abc').isGreaterThan('abc').then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match('abc').isGreaterThan('abcd').then(true).else(false), 'It does not correctly match.');
+  });
+});
+
+describe('\'lessThan\' function test comparing sizes.', () => {
+  it('Then should be available on both successful and unsuccessful matches.', () => {
+    assert.isFunction(match(2).lessThan(1).then, 'It does not return then function on a match.');
+    assert.isFunction(match('abc').lessThan('ab').then, 'It does not return then function without a match.');
+  });
+  it('\'lessThan\' should match based on provided value.', () => {
+    assert.isTrue(match(2).lessThan(3).then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match(2).lessThan(2).then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match(2).lessThan(1).then(true).else(false), 'It does not correctly match.');
+    assert.isTrue(match('abc').lessThan('abcd').then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match('abc').lessThan('abc').then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match('abc').lessThan('ab').then(true).else(false), 'It does not correctly match.');
+  });
+});
+
+describe('\'atLeast\' function test comparing sizes.', () => {
+  it('Then should be available on both successful and unsuccessful matches.', () => {
+    assert.isFunction(match(2).atLeast(1).then, 'It does not return then function on a match.');
+    assert.isFunction(match('abc').atLeast('ab').then, 'It does not return then function without a match.');
+  });
+  it('\'atLeast\' should match based on provided value.', () => {
+    assert.isTrue(match(2).atLeast(2).then(true).else(false), 'It does not correctly match.');
+    assert.isTrue(match(2).atLeast(2).then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match(2).atLeast(3).then(true).else(false), 'It does not correctly match.');
+    assert.isTrue(match('abc').atLeast('ab').then(true).else(false), 'It does not correctly match.');
+    assert.isTrue(match('abc').atLeast('abc').then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match('abc').atLeast('abcd').then(true).else(false), 'It does not correctly match.');
+  });
+});
+
+describe('\'atMost\' function test comparing sizes.', () => {
+  it('Then should be available on both successful and unsuccessful matches.', () => {
+    assert.isFunction(match(2).atMost(1).then, 'It does not return then function on a match.');
+    assert.isFunction(match('abc').atMost('ab').then, 'It does not return then function without a match.');
+  });
+  it('\'atMost\' should match based on provided value.', () => {
+    assert.isTrue(match(2).atMost(3).then(true).else(false), 'It does not correctly match.');
+    assert.isTrue(match(2).atMost(2).then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match(2).atMost(1).then(true).else(false), 'It does not correctly match.');
+    assert.isTrue(match('abc').atMost('abcd').then(true).else(false), 'It does not correctly match.');
+    assert.isTrue(match('abc').atMost('abc').then(true).else(false), 'It does not correctly match.');
+    assert.isFalse(match('abc').atMost('ab').then(true).else(false), 'It does not correctly match.');
   });
 });
 

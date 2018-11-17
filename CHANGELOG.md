@@ -1,5 +1,11 @@
 # conditional-expression changelog
 
+## 1.1.1
+
+- Added greaterThan({*}), lessThan({*}), atLeast({*}), atMost({*}) for comparing sizes
+- Fixed Node.js support
+- 100 % test coverage provided.
+
 ## 1.1.0
 
 - Matching now supports one level of nesting using "thenMatch" function.
