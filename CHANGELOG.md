@@ -1,5 +1,9 @@
 # conditional-expression changelog
 
+## 1.1.2
+
+- Fixed README
+
 ## 1.1.1
 
 - Added greaterThan({*}), lessThan({*}), atLeast({*}), atMost({*}) for comparing sizes

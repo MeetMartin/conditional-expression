@@ -23,7 +23,7 @@ npm install conditional-expression --save
 Without ES6:
 
 ```js
-var match = require('conditional-expression');
+var match = require('conditional-expression').default;
 
 match(1)
   .equals(1).then(function () {
@@ -218,6 +218,16 @@ match(param)
 ```
 
 ## conditional-expression changelog
+
+### 1.1.2
+
+- Fixed README
+
+### 1.1.1
+
+- Added greaterThan({*}), lessThan({*}), atLeast({*}), atMost({*}) for comparing sizes
+- Fixed Node.js support
+- 100 % test coverage provided.
 
 ### 1.1.0
 
