@@ -172,7 +172,7 @@ match('ab').lessThan('abc').then(true).else(false);
 match(2).atLeast(2).then(true).else(false);
 // returns true
 
-match(2).atLeast(3).then(true).else(false);
+match(2).atLeast(1).then(true).else(false);
 // returns true
 
 match(2).atMost(2).then(true).else(false);
