@@ -1,5 +1,4 @@
-declare module 'conditional-expression' {
-
+declare module "conditional-expression" {
   type TFunction<T> = (value: T) => any;
 
   type TOnFunction<T> = (value: T) => boolean;
@@ -14,12 +13,19 @@ declare module 'conditional-expression' {
     lessThan: (value: T) => IMachable<T>;
     atLeast: (value: T) => IMachable<T>;
     atMost: (value: T) => IMachable<T>;
-    else: (value: T | TFunction<T>) => any;
+  }
+
+  interface IMatched<T> extends IHigherOrderMatchReturn<T> {
+    else: (value: T) => T;
+  }
+
+  interface INestedMatched<T> extends IHigherOrderMatchReturn<T> {
+    else: (value: T) => IMatched<T>;
   }
 
   interface IMachable<T> extends IHigherOrderMatchReturn<T> {
-    then: (value: T | TFunction<T>) => IHigherOrderMatchReturn<T>;
-    thenMatched: (value: T | TFunction<T>) => IHigherOrderMatchReturn<T>;
+    then: (value: T | TFunction<T>) => IMatched<T>;
+    thenMatched: (value: T | TFunction<T>) => INestedMatched<T>;
   }
 
   export default function match<T>(value: T): IHigherOrderMatchReturn<T>;
