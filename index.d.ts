@@ -8,6 +8,7 @@ declare module "conditional-expression" {
     with: (value: string) => IMachable<T>;
     equals: (value: T) => IMachable<T>;
     includes: (value: string) => IMachable<T>;
+    isIn: (value: string | T[]) => IMachable<T>
     typeOf: (value: string) => IMachable<T>;
     isGreaterThan: (value: T) => IMachable<T>;
     lessThan: (value: T) => IMachable<T>;

@@ -149,6 +149,23 @@ match('Martian')
 // returns true
 ```
 
+### isIn({string | array})
+
+Evaluates as true based on whether the argument is included in an array or a string.
+
+```js
+match("apple")
+    .isIn(["apple", "orange"]).then(true)
+    .else(false)
+// returns true
+
+match("this")
+    .isIn("This is it").then(1)
+    .isIn("That is not it").then(2)
+    .else(0)
+// returns 1
+```
+
 ### typeOf({string})
 Evaluates as true based a type.
 

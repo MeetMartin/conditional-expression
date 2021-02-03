@@ -75,6 +75,19 @@ describe('\'Includes\' function test using evaluation based on strict equal.', (
   });
 });
 
+describe('\'IsIn\' function test using evaluation based on strict equal.', () => {
+  it('Then should be available on both successful and unsuccessful matches.', () => {
+    assert.isFunction(match('string').isIn(['string', 'number']).then, 'It does not return then function on a match.');
+    assert.isFunction(match('string').isIn(['number', 'boolean']).then, 'It does not return then function without a match.');
+  });
+  it('\'IsIn\' should match based on provided string or array.', () => {
+    assert.isTrue(match('string').isIn(['string', 'number']).then(true).else(false), 'It does not correctly match when param is an array.');
+    assert.isFalse(match('string').isIn(['number', 'boolean']).then(true).else(false), 'It does not correctly match when param is an array.');
+    assert.isTrue(match('string').isIn('This is a string').then(true).else(false), 'It does not correctly match when param is a string.');
+    assert.isFalse(match('string').isIn('This is a number').then(true).else(false), 'It does not correctly match when param is a string.');
+  });
+});
+
 describe('\'TypeOf\' function test using evaluation based on strict equal.', () => {
   it('Then should be available on both successful and unsuccessful matches.', () => {
     assert.isFunction(match(1).typeOf('number').then, 'It does not return then function on a match.');

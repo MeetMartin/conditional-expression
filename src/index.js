@@ -10,6 +10,7 @@ const higherOrderMatch = onFunction => evaluate => x => ({
   with: y => onFunction(x)(evaluate && y.test(x)),
   equals: y => onFunction(x)(evaluate && x === y),
   includes: y => onFunction(x)(evaluate && typeof x === 'string' && x.includes(y)),
+  isIn: y => onFunction(x)(evaluate && (Array.isArray(y) || typeof y === 'string') && y.includes(x)),
   typeOf: y => onFunction(x)(evaluate && typeof x === y),
   isGreaterThan: y => onFunction(x)(evaluate && x > y),
   lessThan: y => onFunction(x)(evaluate && x < y),
