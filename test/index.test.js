@@ -201,3 +201,27 @@ describe('Deeper nest matching through using match function as argument to then 
     assert.isTrue(match(param).includes('string').thenMatch(param).includes('this').then(() => match(param).includes('string').then(true).else(false)).else(false).else(false));
   });
 });
+
+describe('Should be extendable.', () => {
+  it('Testing adding method isNot', () => {
+    match.extend('isNot', x => y => x !== y);
+    assert.isTrue(match(param).isNot(param).then(false).else(true));
+    assert.isTrue(match(param).isNot('This is another string').then(true).else(false));
+  });
+
+  it('Testing adding method intersectsWith', () => {
+    match.extend('intersectsWith', x => y => Array.isArray(x) && Array.isArray(y) && x.some(i => y.includes(i)));
+    assert.isTrue(match(['a', 'b']).intersectsWith(['c', 'd']).then(false).else(true));
+    assert.isTrue(match(['a', 'b']).intersectsWith(['b', 'c']).then(true).else(false));
+    assert.isTrue(match(['a', 'b']).intersectsWith('Not an array').then(false).else(true));
+    assert.isTrue(match('Not an array').intersectsWith(['b', 'c']).then(false).else(true));
+  });
+
+  it('Testing adding method between', () => {
+    match.extend('between', x => (a, b) => a <= x && b >= x);
+    assert.isTrue(match(5).between(1, 2).then(false).else(true));
+    assert.isTrue(match(5).between(6, 7).then(false).else(true));
+    assert.isTrue(match(5).between(4, 6).then(true).else(false));
+    assert.isTrue(match(5).between(6, 4).then(false).else(true));
+  });
+});

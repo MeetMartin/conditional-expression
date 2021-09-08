@@ -1,29 +1,31 @@
-# conditional-expression
+# matchexp
 
-![npm](https://img.shields.io/npm/v/conditional-expression.svg)
-![NpmLicense](https://img.shields.io/npm/l/conditional-expression.svg)
-![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/conditional-expression.svg)
-![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/conditional-expression.svg)
+![npm](https://img.shields.io/npm/v/matchexp.svg)
+![NpmLicense](https://img.shields.io/npm/l/matchexp.svg)
+![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/matchexp.svg)
+![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/matchexp.svg)
 
 Providing 'match' function as a JavaScript functional conditional
 expression to replace conditional statements 'if' and 'switch'
 as an alternative to ternary operator expression.
 
-GitHub repository: https://github.com/MartinGentleman/conditional-expression
+GitHub repository: https://github.com/photonite/matchexp
 
-Medium article explaining motivation and use for the package: [How to replace switch and ternaries in functional JavaScript](https://medium.com/@martinnovk_22870/how-to-replace-switch-and-ternaries-in-functional-javascript-a011f0e93a31).
+Forked from: https://github.com/MartinGentleman/conditional-expression
+
+Medium article explaining motivation and use for the (original) package: [How to replace switch and ternaries in functional JavaScript](https://medium.com/@martinnovk_22870/how-to-replace-switch-and-ternaries-in-functional-javascript-a011f0e93a31).
 
 ## Install
 
 
 ```sh
-npm install conditional-expression --save
+npm install matchexp --save
 ```
 
 Without ES6:
 
 ```js
-var match = require('conditional-expression').default;
+var match = require('matchexp').default;
 
 match(1)
   .equals(1).then(function () {
@@ -35,7 +37,7 @@ match(1)
 With ES6:
 
 ```js
-import match from 'conditional-expression';
+import match from 'matchexp';
 
 match(1)
   .equals(1).then(() => console.log('hello world'))
@@ -234,37 +236,29 @@ match(param)
 // returns true
 ```
 
-## conditional-expression changelog
+## Extending
+You can extend the match function adding more functionality by using the extend method, passing the new method's name and a method of this form:
 
-### 1.1.2
+```js
+(param) => (...methodParams) => /* some logic that returns a boolean value*/
+```
 
-- Fixed README
+Example:
+```js
+match.extend('between', x => (a, b) => a < x && b > x);
 
-### 1.1.1
+const param = 5;
 
-- Added greaterThan({*}), lessThan({*}), atLeast({*}), atMost({*}) for comparing sizes
-- Fixed Node.js support
-- 100 % test coverage provided.
+match(param).between(1, 6).then("Param is in between").else("Param is out of range");
+// returns "Param is in between"
+```
 
-### 1.1.0
 
-- Matching now supports one level of nesting using "thenMatch" function.
-- Added more assertion to test the package and new functionality.
-- Changed the internal structure to promote more internal reusability of the code to add more matching functions in the future if needed.
-- 100 % test coverage provided.
+## matchexp changelog
 
 ### 1.0.1
 
-- "include" function to always returns false if matching over anything else than a string.
-- 100 % test coverage provided.
+- Added isIn matching function to check inclusion in arrays
+- Added extending functionality to allow developers to add their own matching functions on the go.
 
-### 1.0.0
-
-- Initial version of conditional-expression providing matching without nesting using.
-- 100 % test coverage provided.
-
-## Social
-
-Find me on Twitter: https://twitter.com/PerAsperaEU
-
-Find me on Medium: https://medium.com/@martinnovk_22870
+### Forked from MartinGentleman/conditional-expression repository

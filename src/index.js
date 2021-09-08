@@ -1,21 +1,34 @@
+const matchingFs = {
+  on: x => y => y(x) === true,
+  with: x => y => y.test(x),
+  equals: x => y => x === y,
+  includes: x => y => typeof x === 'string' && x.includes(y),
+  isIn: x => y =>  (Array.isArray(y) || typeof y === 'string') && y.includes(x),
+  typeOf: x => y => typeof x === y,
+  isGreaterThan: x => y => x > y,
+  lessThan: x => y =>  x < y,
+  atLeast: x => y =>  x >= y,
+  atMost: x => y => x <= y,
+  isTrue: x => () => !!x,
+  isFalse: x => () =>  !x,
+};
+
 /**
  * Higher-order function to serve as prototype for other matching functions
  * @param {function} onFunction function to be used for matching functions
  * @param {boolean} evaluate whether condition should be evaluated
  * @param {*} x simple value to be matched
- * @returns {object} higherOrderMatch :: a -> b -> c {on: d -> e, with: d -> e, equals: d -> e, includes: d -> e, typeof: d -> e}
+ * @returns {object} higherOrderMatch :: a -> b -> c {on: d -> e, with: d -> e, equals: d -> e, includes: d -> e, typeof: d -> e, ...etc}
  */
-const higherOrderMatch = onFunction => evaluate => x => ({
-  on: y => onFunction(x)(evaluate && y(x) === true),
-  with: y => onFunction(x)(evaluate && y.test(x)),
-  equals: y => onFunction(x)(evaluate && x === y),
-  includes: y => onFunction(x)(evaluate && typeof x === 'string' && x.includes(y)),
-  isIn: y => onFunction(x)(evaluate && (Array.isArray(y) || typeof y === 'string') && y.includes(x)),
-  typeOf: y => onFunction(x)(evaluate && typeof x === y),
-  isGreaterThan: y => onFunction(x)(evaluate && x > y),
-  lessThan: y => onFunction(x)(evaluate && x < y),
-  atLeast: y => onFunction(x)(evaluate && x >= y),
-  atMost: y => onFunction(x)(evaluate && x <= y)
+const higherOrderMatch = onFunction => evaluate => x => new Proxy(matchingFs, {
+  /**
+   * @param {object} target 
+   * @param {string} name 
+   * @returns higherOrderMatch :: a -> b -> c {on: d -> e, with: d -> e, equals: d -> e, includes: d -> e, typeof: d -> e, ...etc}
+   */
+  get(target, name) {
+    return (...args) => onFunction(x)(evaluate && target[name](x)(...args));
+  }
 });
 
 /**
@@ -130,5 +143,30 @@ const onNestedMatched = x => () => ({
 const onIgnoreNestedMatch = x => () => ({
   then: () => ignoreNestedMatch(x)
 });
+
+/**
+ * Extends match with a new method
+ * @param {string} name new method name
+ * @param {object} method the method of the form x => (...args) => bool
+ * @returns {object} match: x => {then: () => b, else: () => c}
+ * @example 
+ *   match.extend('between', x => (a, b) => a <= x && b >= x)
+ *   match(5).between(4, 6).then(true).else(false)
+ */
+const extend = (name, method, override = false) => {
+  if (!override) {
+    const existing = Object.keys(matchingFs);
+
+    if(existing.includes(name)) {
+      throw new Error(`Method ${name} already defined.`);
+    }
+  }
+
+  matchingFs[name] = method;
+
+  return match;
+};
+
+match.extend = extend;
 
 export default match;
